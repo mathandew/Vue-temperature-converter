@@ -1,24 +1,24 @@
-# temperature-converter
+# 🌡️ Temperature Converter
 
-## Project setup
-```
-npm install
-```
+A simple Vue.js application to convert temperatures from Celsius to Fahrenheit.  
+This project demonstrates core Vue concepts like **computed properties**, **watchers**, and **dynamic class bindings**.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+---
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## 🚀 Live Demo
 
-### Lints and fixes files
-```
-npm run lint
-```
+> _(Optional: Add GitHub Pages or Vercel/Netlify URL here later)_
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+---
+
+## 🛠️ Features
+
+- 🔁 Real-time Celsius to Fahrenheit conversion
+- 🧠 Computed property for efficient recalculation
+- 👀 Watcher to observe temperature changes
+- 🎨 Dynamic class styling based on temperature range:
+  - Blue = Cold ❄️
+  - Green = Normal 🌿
+  - Red = Hot 🔥
+
+
