@@ -1,22 +1,32 @@
 <template>
   <div class="app">
-    <h1>🌡️ Temperature Converter</h1>
+    <h1>🌡️ Universal Temperature Converter</h1>
 
     <div class="converter-box">
-      <label for="celsius">Enter Celsius:</label>
+      <!-- Unit selector -->
+      <label for="unit">Select Input Unit:</label>
+      <select id="unit" v-model="selectedUnit">
+        <option value="celsius">Celsius (°C)</option>
+        <option value="fahrenheit">Fahrenheit (°F)</option>
+        <option value="kelvin">Kelvin (K)</option>
+      </select>
+
+      <!-- Temperature input -->
+      <label for="input">Enter Temperature:</label>
       <input
-        id="celsius"
+        id="input"
         type="number"
-        v-model="celsius"
-        placeholder="Enter Celsius temperature"
+        v-model.number="inputValue"
+        placeholder="Enter temperature"
       />
 
-      <p :class="tempClass">
-        Fahrenheit: <strong>{{ fahrenheit }} °F</strong>
-      </p>
+      <!-- Output Results -->
+      <div class="results">
+        <p v-if="selectedUnit !== 'celsius'">🌡️ Celsius: <strong>{{ toCelsius }} °C</strong></p>
+        <p v-if="selectedUnit !== 'fahrenheit'">🔥 Fahrenheit: <strong>{{ toFahrenheit }} °F</strong></p>
+        <p v-if="selectedUnit !== 'kelvin'">❄️ Kelvin: <strong>{{ toKelvin }} K</strong></p>
+      </div>
     </div>
-
-    <p class="note">Dynamic styling applied based on temperature</p>
   </div>
 </template>
 
@@ -24,24 +34,45 @@
 export default {
   data() {
     return {
-      celsius: 0,
-      fahrenheitWatched: 32,
+      inputValue: 0,
+      selectedUnit: "celsius",
     };
   },
   computed: {
-    fahrenheit() {
-      return (this.celsius * 9) / 5 + 32;
+    // Convert to Celsius
+    toCelsius() {
+      switch (this.selectedUnit) {
+        case "fahrenheit":
+          return ((this.inputValue - 32) * 5 / 9).toFixed(2);
+        case "kelvin":
+          return (this.inputValue - 273.15).toFixed(2);
+        default:
+          return this.inputValue.toFixed(2);
+      }
     },
-    tempClass() {
-      if (this.fahrenheit < 32) return 'cold';
-      if (this.fahrenheit > 85) return 'hot';
-      return 'normal';
-    }
-  },
-  watch: {
-    celsius(newVal) {
-      this.fahrenheitWatched = (newVal * 9) / 5 + 32;
-      console.log(`Watcher: Celsius changed to ${newVal}, Fahrenheit updated to ${this.fahrenheitWatched}`);
+
+    // Convert to Fahrenheit
+    toFahrenheit() {
+      switch (this.selectedUnit) {
+        case "celsius":
+          return ((this.inputValue * 9 / 5) + 32).toFixed(2);
+        case "kelvin":
+          return (((this.inputValue - 273.15) * 9 / 5) + 32).toFixed(2);
+        default:
+          return this.inputValue.toFixed(2);
+      }
+    },
+
+    // Convert to Kelvin
+    toKelvin() {
+      switch (this.selectedUnit) {
+        case "celsius":
+          return (this.inputValue + 273.15).toFixed(2);
+        case "fahrenheit":
+          return (((this.inputValue - 32) * 5 / 9) + 273.15).toFixed(2);
+        default:
+          return this.inputValue.toFixed(2);
+      }
     }
   }
 };
@@ -55,46 +86,36 @@ export default {
 }
 
 .converter-box {
-  background-color: #f5f5f5;
-  padding: 20px;
-  width: 300px;
+  background-color: #f9f9f9;
+  padding: 30px;
+  width: 350px;
   margin: auto;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
 }
 
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+select,
 input {
-  margin-top: 10px;
+  width: 90%;
   padding: 10px;
+  margin-top: 8px;
   font-size: 16px;
-  width: 80%;
+  border-radius: 6px;
   border: 1px solid #ccc;
-  border-radius: 4px;
 }
 
-p {
-  margin-top: 20px;
-  font-size: 20px;
+.results {
+  margin-top: 25px;
 }
 
-.note {
-  margin-top: 30px;
-  font-style: italic;
-  color: #666;
-}
-
-.cold {
-  color: #2196f3;
-  font-weight: bold;
-}
-
-.normal {
-  color: #4caf50;
-  font-weight: bold;
-}
-
-.hot {
-  color: #f44336;
+.results p {
+  font-size: 18px;
   font-weight: bold;
 }
 </style>
